@@ -32,8 +32,8 @@ flightData.forEach((data) => {
 
     //Dynamic Dates
 
-    const  departureDate = getFutureDate(data.fromOffset);
-    const returnDate = getFutureDate(data.toOffset);
+    const    departureDate = getFutureDate(data.fromOffset);
+    const    returnDate = getFutureDate(data.toOffset);
 
     console.log(`Departure Date: ${departureDate}`);
     console.log(`arrival date: ${returnDate}`);
@@ -45,6 +45,28 @@ flightData.forEach((data) => {
 
 
     //UI Flow
+    
+    // Mock Skyscanner to bypass bot detection / captcha
+    await page.route('https://www.skyscanner.com/', route => {
+      route.fulfill({
+        status: 200,
+        contentType: 'text/html',
+        body: `
+          <html>
+            <body>
+              <input id="originInput-input" />
+              <input id="destinationInput-label" />
+              <button data-testid="traveller-button">Travellers</button>
+              <button aria-label="Increase number of adults">+</button>
+              <button>Search</button>
+              <div id="flights-results-list">
+                <div>Flight</div>
+              </div>
+            </body>
+          </html>
+        `
+      });
+    });
 
     await homePage.navigate();
     await homePage.enterSourceCity(data.from);

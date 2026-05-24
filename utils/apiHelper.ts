@@ -31,8 +31,8 @@ async getMockFlightData(){
             }
         ]
     };
-
 }
+
 
 
 
@@ -51,3 +51,5 @@ async getFiveDayFlightPrices(){
 }
 
 }
+
+
