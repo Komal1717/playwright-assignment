@@ -80,10 +80,10 @@ await searchBtn.click();
 
 async verifySearchResults(){
 
-const results = this.page.locator('#flights-results');
+const results = this.page.locator('#flights-results-list');
 const count = await results.count();
 
-console.log(`Ticket found: ${count})`);
+console.log(`Ticket found: ${count}`);
 
 expect(count).toBeGreaterThan(0);
 
