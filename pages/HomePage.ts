@@ -80,7 +80,7 @@ await searchBtn.click();
 
 async verifySearchResults(){
 
-const results = this.page.locator('#flights-results-list');
+const results = this.page.locator('#flights-results');
 const count = await results.count();
 
 console.log(`Ticket found: ${count})`);

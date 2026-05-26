@@ -6,6 +6,9 @@ import { apiHelper } from '../utils/apiHelper';
 
 
 
+
+
+
 flightData.forEach((data) => {
   test(`search flight from ${data.from} to ${data.to}`, async ({page}) => {
     test.slow();
@@ -99,10 +102,12 @@ flightData.forEach((data) => {
     });
 
     
-    
-
-
-
-
   });
+
+
+
+
+
+
+
 
