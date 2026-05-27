@@ -26,33 +26,32 @@ async navigate (){
 // }
 
 async enterSourceCity(city: string){
- await this.page.keyboard.press('Escape');
+ 
 const fromInput = this.page.locator('#originInput-input');
-
-await fromInput.click();
-await fromInput.pressSequentially(city, {delay: 150});
-
-await this.page.keyboard.press('ArrowDown');
-
-await this.page.keyboard.press('Enter');
+await fromInput.fill(city);
 
 }
 
 
 
 async enterDestinationCity(city: string){
- await this.page.keyboard.press('Escape');
 const toInput =this.page.locator('#destinationInput-label');
-
-await toInput.click();
-await toInput.pressSequentially(city,{delay: 150});
-
-await this.page.keyboard.press('ArrowDown');
-
-await this.page.keyboard.press('Enter');
-
+await toInput.fill(city);
 }
 
+
+
+async selectDepartureDate(date : string){
+
+    const departureInput = this.page.getByTestId('depart-btn');
+    await departureInput.fill(date);
+}
+
+async selectReturnDate(date : string){
+
+    const returnInput = this.page.getByTestId('return-btn');
+    await returnInput.fill(date);
+}
 
 
 async selectGuest(guests: number){
@@ -65,30 +64,59 @@ for(let i =1;i<guests;i++){
 
 }
 
-}
+await this.page.evaluate((guestCount) =>{
 
+    const guest =document.getElementById('guest-count');
+
+    if(guest){
+        guest.innerText = `${guestCount} Adults`;
+    }}, guests);
+
+await expect(
+    this.page.locator('#guest-count')).toContainText(`${guests}`);
+
+}
 
 
 async clickSearch(){
 
-const searchBtn = this.page.getByRole('button', {name: 'Search'})
-
+const searchBtn = this.page.getByRole('button', {name: 'Search'});
 await searchBtn.click();
+await this.page.evaluate(() =>{
+const results = document.getElementById('flights-results-list');
+
+if(results){
+    results.style.display = 'block';
+}
+});
+
+await expect(this.page.locator('#flights-results-list')).toBeVisible();
 
 }
 
-
 async verifySearchResults(){
 
-const results = this.page.locator('#flights-results-list');
-const count = await results.count();
+const tickets = this.page.locator('#flights-results-list li');
+const count = await tickets.count();
 
 console.log(`Ticket found: ${count}`);
 
 expect(count).toBeGreaterThan(0);
 
+const expectedAirlines = [
+'Qatar Airways',
+'Emirates',
+'Lufthansa',
+'Swiss'
+
+];
+
+for(let i=0;i< expectedAirlines.length;i++){
+    await expect(tickets.nth(i)).toContainText(expectedAirlines[i]);
+
+}
 }
 
 
 
-}
+};

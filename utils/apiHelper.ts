@@ -28,6 +28,10 @@ async getMockFlightData(){
             {
                 airline: 'Lufthansa',
                 price: 230
+            },
+            {
+                airline: 'Swiss',
+                price: 700
             }
         ]
     };
